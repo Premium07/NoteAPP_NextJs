@@ -6,7 +6,11 @@
   body {
     @apply bg-primaryDark;
   }
-  .appContainer {
+  /* .appContainer {
     @apply max-w-[1500px] mx-auto px-4;
-  }
+  } */
+}
+
+* {
+  font-family: Product Sans;
 }

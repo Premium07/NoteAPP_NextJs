@@ -5,7 +5,7 @@ import Note from "@/components/Note";
 import Popup from "@/components/Popup";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
@@ -13,6 +13,8 @@ export default function Home() {
   const [openPopup, setOpenPopup] = useState(false);
   const [editNote, setEditNote] = useState(false);
   const [currentNote, setCurrentNote] = useState({});
+
+  const ref = useRef();
 
   const { data: session } = useSession();
 
@@ -29,33 +31,39 @@ export default function Home() {
   if (!session?.user) return <Login />;
 
   return (
-    <main className="px-5">
+    <main className="px-5 relative overflow-hidden">
       <Navbar />
-      <section className="appContainer relative">
-        <div className="grid grid-cols-2 md:grid-col-3 gap-4 mt-4">
-          {notes.map((note) => {
-            return (
-              <Note
-                key={note._id}
-                note={note.note}
-                onClick={() => {
-                  setEditNote(true);
-                  setOpenPopup(true);
-                  setCurrentNote(note);
-                }}
-              />
-            );
-          })}
-        </div>
-        <div
-          className="rounded-full size-10 grid place-items-center text-2xl cursor-pointer text-gray-400 fixed z-10 right-0 bottom-0 m-4 bg-primary"
-          title="Add Note"
-          onClick={() => {
-            setEditNote(false);
-            setOpenPopup(true);
-          }}
-        >
-          +
+      <div className="absolute -z-10 top-60 left-1/2 -translate-x-1/2">
+        <h1 className="text-9xl font-bold text-zinc-700">Note App.</h1>
+      </div>
+      <section className="relative w-full h-screen overflow-hidden">
+        <div ref={ref} className="w-full h-full">
+          <div className="grid grid-cols-2 md:grid-col-3 gap-4 mt-4">
+            {notes.map((note) => {
+              return (
+                <Note
+                  reference={ref}
+                  key={note._id}
+                  note={note.note}
+                  onClick={() => {
+                    setEditNote(true);
+                    setOpenPopup(true);
+                    setCurrentNote(note);
+                  }}
+                />
+              );
+            })}
+          </div>
+          <div
+            className="rounded-full size-10 grid place-items-center text-2xl cursor-pointer text-gray-400 fixed z-10 right-0 bottom-0 m-4 bg-primary"
+            title="Add Note"
+            onClick={() => {
+              setEditNote(false);
+              setOpenPopup(true);
+            }}
+          >
+            +
+          </div>
         </div>
       </section>
       {openPopup && (
