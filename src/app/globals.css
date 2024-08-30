@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: ProductSans;
+  src: url(../../font/Product\ Sans\ Regular.ttf);
+}
+
 @layer base {
   body {
     @apply bg-primaryDark;
@@ -12,5 +17,5 @@
 }
 
 * {
-  font-family: Product Sans;
+  font-family: ProductSans;
 }
